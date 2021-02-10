@@ -17,7 +17,7 @@ export const Dashboard = () => {
             settransDetails(usage.memoryUsage)
         }
         eventSource.onerror = (err) => {
-            console.error("EventSource failed:", err);
+            console.error("EventSource faild:", err);
             eventSource.close();
         }
     
