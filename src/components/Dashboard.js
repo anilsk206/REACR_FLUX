@@ -11,10 +11,11 @@ export const Dashboard = () => {
 
     const submitHandler = event => {
       event.preventDefault();
-        eventSource = new EventSource("http://localhost:8080/event/resources/usage/"+transID);
+        eventSource = new EventSource("http://localhost:8081/event/getInsights/"+transID);
         eventSource.onmessage = (event) => {
-            const usage = JSON.parse(event.data);
-            settransDetails(usage.memoryUsage)
+            const insights = event.data;
+            console.log("data........."+insights)
+            settransDetails(insights)
         }
         eventSource.onerror = (err) => {
             console.error("EventSource faild:", err);
@@ -32,30 +33,38 @@ export const Dashboard = () => {
     return (
       <section>
       <form onSubmit={submitHandler}>
-        <div className="form-control">
-          <label htmlFor="title">TranscriptionID</label>
+        <div className="form-control" style={{
+          display: "flex",
+          justifyContent: "center",
+          allignItems: "center"
+        }}>
+          <label htmlFor="title" style={{marginRight:"20px",marginTop: "20px",marginBottom:"20px"}}>UCID</label>
           <input
             type="text"
             id="id"
+            style={{marginRight:"20px",marginTop:"20px",marginBottom:"20px"}}
             value={transID}
             onChange={event => {
               settransID(event.target.value);
             }}
           />
+          <button type="submit" style={{marginRight:"20px",marginTop:"20px",marginBottom:"20px"}}>Get Insights</button>
         </div>
-        <div className="form-control">
-          <label htmlFor="data">TranscriptionData</label>
-          <input
-            type="text"
-            id="details"
+        <div className="form-control" style={{
+          display:"flex",
+          justifyContent:"center",
+          allignItems: "center"
+        }}>
+          <label htmlFor="data" style={{marginRight:"20px",marginTop:"20px",marginBottom:"20px"}}>Insights</label>
+          <textarea
+            style={{marginRight:"20px",marginTop:"20px",marginBottom:"20px"}}
             value={transDetails}
             onChange={event => {
               settransDetails(event.target.value);
             }}
+            rows={5}
+            cols={50}
           />
-        </div>
-        <div>
-          <button type="submit">Get Data</button>
         </div>
       </form>
   </section>
